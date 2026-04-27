@@ -470,25 +470,105 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
 <div id="toast"></div>
 
 <script>
-const PRODUCTS = [
-  {id:1, name:'TEH TARIK GANG', sub:'Lokal Vibes · Unisex', images:['tehtarikgang.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:2, name:'BLACK & PROUD', sub:'Lokal Vibes · Unisex', images:['black_proud.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
-  {id:3, name:'STAY DRIPPY', sub:'Lokal Vibes · Unisex', images:['staydrippy.png'], bg:'#ffffff', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
-  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], bg:'#ffffff', category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:5, name:'LAH ENERGY', sub:'Lokal Vibes · Oversized', images:[], bg:'#ffffff', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
-  {id:6, name:'BOLEH LAH', sub:'Lokal Vibes · Unisex', images:[], bg:'#ffffff', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
-  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], bg:'#ffffff', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], bg:'#ffffff', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], bg:'#ffffff', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], bg:'#ffffff', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
-  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], bg:'#ffffff', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:12, name:'LEPAK KING', sub:'Lokal Vibes · Oversized', images:[], bg:'#ffffff', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-];
+// ─── GOOGLE SHEETS CONFIG ─────────────────────────────
+const SHEET_ID = '1er1eCNWK3I2_tPzAfmulWxbXoDWeFsMAxqfX-p2bLIE';
+const SHEET_CSV = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv`;
 
+// ─── PRODUCT TEMPLATE (images, sizes, category stay here) ─
+const PRODUCT_TEMPLATE = {
+  1:  {images:['tehtarikgang.png'], sizes:['XS','S','M','L','XL'],    category:'myslang',   sub:'Lokal Vibes · Unisex'},
+  2:  {images:['black_proud.png'],  sizes:['S','M','L','XL'],         category:'myslang',   sub:'Lokal Vibes · Unisex'},
+  3:  {images:['staydrippy.png'],   sizes:['S','M','L','XL','XXL'],   category:'myslang',   sub:'Lokal Vibes · Unisex'},
+  4:  {images:['anakmalaysia.png'], sizes:['XS','S','M','L','XL'],    category:'cultural',  sub:'Cultural Pride · Unisex'},
+  5:  {images:[],                   sizes:['S','M','L','XL','XXL'],   category:'myslang',   sub:'Lokal Vibes · Oversized'},
+  6:  {images:[],                   sizes:['XS','S','M','L','XL'],    category:'myslang',   sub:'Lokal Vibes · Unisex'},
+  7:  {images:[],                   sizes:['XS','S','M','L','XL'],    category:'tamil',     sub:'Tamil Type · Unisex'},
+  8:  {images:[],                   sizes:['S','M','L','XL'],         category:'tamil',     sub:'Tamil Type · Unisex'},
+  9:  {images:[],                   sizes:['S','M','L','XL'],         category:'cultural',  sub:'Cultural Pride · Unisex'},
+  10: {images:[],                   sizes:['S','M','L','XL','XXL'],   category:'cultural',  sub:'Cultural Pride · Oversized'},
+  11: {images:[],                   sizes:['XS','S','M','L','XL'],    category:'cultural',  sub:'Cultural Pride · Unisex'},
+  12: {images:[],                   sizes:['S','M','L','XL'],         category:'myslang',   sub:'Lokal Vibes · Oversized'},
+};
+
+let PRODUCTS = [];
 let cart = [];
 let selectedSizes = {};
 let lbImages = [];
 let lbIndex = 0;
+
+// ─── PARSE CSV ─────────────────────────────────────────
+function parseCSV(csv) {
+  const lines = csv.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+  return lines.slice(1).map(line => {
+    // handle commas inside quoted fields
+    const cols = [];
+    let cur = '', inQuote = false;
+    for (const ch of line) {
+      if (ch === '"') inQuote = !inQuote;
+      else if (ch === ',' && !inQuote) { cols.push(cur.trim()); cur = ''; }
+      else cur += ch;
+    }
+    cols.push(cur.trim());
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = cols[i] || '');
+    return obj;
+  });
+}
+
+// ─── FETCH PRICES FROM SHEET ───────────────────────────
+async function loadProductsFromSheet() {
+  showLoadingState();
+  try {
+    const res = await fetch(SHEET_CSV);
+    if (!res.ok) throw new Error('Sheet fetch failed');
+    const csv = await res.text();
+    const rows = parseCSV(csv);
+    PRODUCTS = rows.map(row => {
+      const id = parseInt(row.id);
+      const tmpl = PRODUCT_TEMPLATE[id] || {images:[], sizes:['S','M','L','XL'], category:'myslang', sub:'Lokal Vibes · Unisex'};
+      // strip RM prefix if present, parse float
+      const parsePrice = v => v ? parseFloat(v.toString().replace(/[^\d.]/g,'')) || null : null;
+      return {
+        id,
+        name: row.name || '',
+        sub: tmpl.sub,
+        images: tmpl.images,
+        bg: '#ffffff',
+        category: (row.category || tmpl.category).toLowerCase().replace(/\s+/g,''),
+        price: parsePrice(row.price) || 0,
+        oldPrice: parsePrice(row.oldprice) || null,
+        badge: row.badge ? row.badge.trim().toLowerCase() : null,
+        sizes: tmpl.sizes,
+      };
+    }).filter(p => p.id && p.name);
+    renderProducts();
+    initSlideshow();
+  } catch(err) {
+    console.error('Sheet load failed:', err);
+    showSheetError();
+  }
+}
+
+function showLoadingState() {
+  const grid = document.getElementById('product-grid');
+  if (grid) grid.innerHTML = `
+    <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);">
+      <div style="font-size:2rem;margin-bottom:12px;">⏳</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;">LOADING DROPS...</div>
+    </div>`;
+}
+
+function showSheetError() {
+  const grid = document.getElementById('product-grid');
+  if (grid) grid.innerHTML = `
+    <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted);">
+      <div style="font-size:2rem;margin-bottom:12px;">⚠️</div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:2px;color:var(--accent);">COULD NOT LOAD PRODUCTS</div>
+      <div style="font-size:0.85rem;margin-top:8px;">Please check your internet connection and try again.</div>
+      <button onclick="loadProductsFromSheet()" style="margin-top:16px;background:var(--ink);color:#fff;border:none;padding:10px 24px;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;cursor:pointer;border-radius:4px;">RETRY</button>
+    </div>`;
+}
 
 function renderProducts(filter='all') {
   const grid = document.getElementById('product-grid');
@@ -769,9 +849,8 @@ function resetSlideTimer() {
   startSlideTimer();
 }
 
-// Init
-renderProducts();
-initSlideshow();
+// Init — load prices from Google Sheet
+loadProductsFromSheet();
 </script>
 </body>
 </html>

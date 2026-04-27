@@ -129,17 +129,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);mi
     <!-- HEADER -->
     <div class="admin-header">
       <h1>PRODUCT PRICING</h1>
-      <button class="save-all-btn" onclick="saveAll()">💾 SAVE & EXPORT</button>
+      <button class="save-all-btn" onclick="window.open(SHEET_URL,'_blank')">📊 EDIT IN GOOGLE SHEET</button>
     </div>
 
     <!-- INSTRUCTIONS -->
-    <div class="instructions">
+      <div class="instructions">
       <h3>How to update prices</h3>
       <ol>
-        <li>Edit any price below — changed fields turn <span style="color:var(--accent)">red</span></li>
-        <li>Toggle <strong>Sale</strong> on/off for any product</li>
-        <li>Click <strong>SAVE & EXPORT</strong> — copies updated code to clipboard</li>
-        <li>Go to <strong>GitHub</strong> → open <code>index.html</code> → find the PRODUCTS array → paste and commit</li>
+        <li>Click <strong>EDIT IN GOOGLE SHEET</strong> above</li>
+        <li>Update any price, oldPrice, or badge directly in the sheet</li>
+        <li>Save the sheet (auto-saves in Google)</li>
+        <li>Refresh <code>semboyanstreetwear.pages.dev</code> — new prices load automatically ✅</li>
       </ol>
     </div>
 
@@ -163,6 +163,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--soft);color:var(--ink);mi
 <script>
 // ─── CONFIG ───────────────────────────────────────────
 const ADMIN_PASSWORD = 'semboyan2025';
+const SHEET_URL = 'https://docs.google.com/spreadsheets/d/1er1eCNWK3I2_tPzAfmulWxbXoDWeFsMAxqfX-p2bLIE/edit';
 
 // ─── PRODUCTS (keep in sync with index.html) ──────────
 let PRODUCTS = [
