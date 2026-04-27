@@ -77,8 +77,8 @@ nav{position:sticky;top:0;z-index:100;background:var(--ink);display:flex;align-i
 .product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;padding:16px 32px 60px;}
 .product-card{background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);transition:transform 0.2s,box-shadow 0.2s;}
 .product-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.08);}
-.product-img{height:280px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden;cursor:zoom-in;}
-.product-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.3s;}
+.product-img{height:280px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;position:relative;overflow:hidden;cursor:zoom-in;background:#ffffff;}
+.product-img img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.3s;padding:8px;}
 .product-img:hover img{transform:scale(1.04);}
 .product-img .thumb-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);display:flex;gap:5px;}
 .product-img .thumb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);border:1px solid rgba(255,255,255,0.6);cursor:pointer;transition:background 0.2s;}
@@ -489,18 +489,18 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
 
 <script>
 const PRODUCTS = [
-  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', images:['tehtarikgang.png'], bg:'#1a1a1a', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', images:['black_proud.png'], bg:'#1a1a1a', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
-  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', images:['staydrippy.png'], bg:'#1a1a1a', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
-  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], bg:'#2a2a2a', category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
-  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', images:[], bg:'#f4ede0', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
-  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', images:[], bg:'#e8f4f0', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
-  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], bg:'#f8e8e8', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], bg:'#eaf2e8', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], bg:'#eaf2e8', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
-  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], bg:'#f0f4f8', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
-  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], bg:'#f8e8e8', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
-  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', images:[], bg:'#e8e8f4', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:1, name:'TEH TARIK GANG', sub:'MY Slang · Unisex', images:['tehtarikgang.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:2, name:'BLACK & PROUD', sub:'MY Slang · Unisex', images:['black_proud.png'], bg:'#ffffff', category:'myslang', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:'new'},
+  {id:3, name:'STAY DRIPPY', sub:'MY Slang · Unisex', images:['staydrippy.png'], bg:'#ffffff', category:'myslang', price:95, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:'new'},
+  {id:4, name:'ANAK MALAYSIA', sub:'Cultural Pride · Unisex', images:['anakmalaysia.png'], bg:'#ffffff', category:'cultural', price:99, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:'new'},
+  {id:5, name:'LAH ENERGY', sub:'MY Slang · Oversized', images:[], bg:'#ffffff', category:'myslang', price:99, oldPrice:null, sizes:['S','M','L','XL','XXL'], badge:null},
+  {id:6, name:'BOLEH LAH', sub:'MY Slang · Unisex', images:[], bg:'#ffffff', category:'myslang', price:79, oldPrice:99, sizes:['XS','S','M','L','XL'], badge:'sale'},
+  {id:7, name:'வணக்கம்', sub:'Tamil Type · Unisex', images:[], bg:'#ffffff', category:'tamil', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:8, name:'MAKKAL', sub:'Tamil Type · Unisex', images:[], bg:'#ffffff', category:'tamil', price:89, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:9, name:'TANAH AIR', sub:'Cultural Pride · Unisex', images:[], bg:'#ffffff', category:'cultural', price:95, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
+  {id:10, name:'MALAYSIA KITA', sub:'Cultural Pride · Oversized', images:[], bg:'#ffffff', category:'cultural', price:99, oldPrice:119, sizes:['S','M','L','XL','XXL'], badge:'sale'},
+  {id:11, name:'SEMANGAT', sub:'Cultural Pride · Unisex', images:[], bg:'#ffffff', category:'cultural', price:89, oldPrice:null, sizes:['XS','S','M','L','XL'], badge:null},
+  {id:12, name:'LEPAK KING', sub:'MY Slang · Oversized', images:[], bg:'#ffffff', category:'myslang', price:85, oldPrice:null, sizes:['S','M','L','XL'], badge:null},
 ];
 
 let cart = [];
