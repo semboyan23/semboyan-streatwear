@@ -596,7 +596,7 @@ function renderProducts(filter='all') {
         <div class="product-name">${p.name}</div>
         <div class="product-sub">${p.sub}</div>
         <div class="product-price">
-          ${p.oldPrice ? `<span class="old">RM ${p.oldPrice}</span><span class="new-price">RM ${p.price}</span>` : `RM ${p.price}`}
+          ${p.oldPrice ? `<span class="old">RM ${p.oldPrice.toFixed(2)}</span><span class="new-price">RM ${p.price.toFixed(2)}</span>` : `RM ${p.price.toFixed(2)}`}
         </div>
         <div class="size-row" id="sizes-${p.id}">
           ${p.sizes.map(s => `<button class="size-btn" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}
@@ -712,16 +712,16 @@ function renderCart() {
         </div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;">
-        <span class="cart-item-price">RM ${item.price * item.qty}</span>
+        <span class="cart-item-price">RM ${(item.price * item.qty).toFixed(2)}</span>
         <button class="remove-btn" onclick="removeItem(${idx})">Remove</button>
       </div>
     </div>
   `).join('');
   const subtotal = cart.reduce((s,i) => s + i.price * i.qty, 0);
   const shipping = subtotal >= 150 ? 0 : 9;
-  document.getElementById('cart-subtotal').textContent = `RM ${subtotal}`;
-  document.getElementById('cart-shipping').textContent = shipping === 0 ? 'FREE 🎉' : `RM ${shipping}`;
-  document.getElementById('cart-total-val').textContent = `RM ${subtotal + shipping}`;
+  document.getElementById('cart-subtotal').textContent = `RM ${subtotal.toFixed(2)}`;
+  document.getElementById('cart-shipping').textContent = shipping === 0 ? 'FREE 🎉' : `RM ${shipping.toFixed(2)}`;
+  document.getElementById('cart-total-val').textContent = `RM ${(subtotal + shipping).toFixed(2)}`;
   footerEl.style.display = 'block';
 }
 
@@ -745,9 +745,9 @@ function goCheckout() {
   const shipping = subtotal >= 150 ? 0 : 9;
   document.getElementById('order-summary').innerHTML = `
     <h4>Order Summary</h4>
-    ${cart.map(i => `<div class="summary-item"><span>${i.name} × ${i.qty} (${i.size})</span><span>RM ${i.price * i.qty}</span></div>`).join('')}
-    <div class="summary-item"><span>Shipping</span><span>${shipping === 0 ? 'FREE' : 'RM ' + shipping}</span></div>
-    <div class="summary-total"><span>TOTAL</span><span>RM ${subtotal + shipping}</span></div>
+    ${cart.map(i => `<div class="summary-item"><span>${i.name} × ${i.qty} (${i.size})</span><span>RM ${(i.price * i.qty).toFixed(2)}</span></div>`).join('')}
+    <div class="summary-item"><span>Shipping</span><span>${shipping === 0 ? 'FREE' : 'RM ' + shipping.toFixed(2)}</span></div>
+    <div class="summary-total"><span>TOTAL</span><span>RM ${(subtotal + shipping).toFixed(2)}</span></div>
   `;
   document.getElementById('main-view').style.display = 'none';
   document.getElementById('checkout-view').style.display = 'block';
