@@ -184,7 +184,59 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
 /* TOAST */
 #toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:12px 24px;border-radius:6px;font-size:0.9rem;opacity:0;transition:all 0.3s;z-index:999;pointer-events:none;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-/* MODALS */
+/* PRODUCT DETAIL MODAL */
+.pd-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.65);z-index:400;align-items:center;justify-content:center;padding:16px;}
+.pd-overlay.open{display:flex;}
+.pd-box{background:#fff;border-radius:12px;width:100%;max-width:900px;max-height:92vh;display:flex;flex-direction:column;overflow:hidden;}
+.pd-close{position:absolute;top:16px;right:16px;background:var(--ink);color:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;}
+.pd-body{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;}
+/* LEFT — gallery */
+.pd-gallery{background:var(--soft);display:flex;flex-direction:column;gap:12px;padding:20px;overflow-y:auto;}
+.pd-main-img-wrap{position:relative;background:#fff;border-radius:8px;overflow:hidden;aspect-ratio:1;}
+.pd-main-img{width:100%;height:100%;object-fit:contain;padding:12px;transition:opacity 0.2s;}
+.pd-main-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:5rem;background:#fff;border-radius:8px;}
+.pd-thumbs{display:flex;gap:8px;flex-wrap:wrap;}
+.pd-thumb{width:68px;height:68px;border-radius:6px;object-fit:contain;background:#fff;border:2px solid transparent;cursor:pointer;padding:4px;transition:border-color 0.15s;}
+.pd-thumb.active{border-color:var(--ink);}
+/* RIGHT — details */
+.pd-details{padding:32px 28px;overflow-y:auto;display:flex;flex-direction:column;gap:0;position:relative;}
+.pd-brand{font-size:0.72rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:6px;}
+.pd-name{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;line-height:1;margin-bottom:4px;}
+.pd-sub{font-size:0.82rem;color:var(--muted);margin-bottom:16px;}
+.pd-price-wrap{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.pd-price{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:1px;}
+.pd-old-price{font-size:1rem;color:var(--muted);text-decoration:line-through;}
+.pd-badge{display:inline-block;padding:3px 10px;border-radius:3px;font-size:0.7rem;font-family:'Bebas Neue',sans-serif;letter-spacing:1px;margin-bottom:16px;}
+.pd-badge.new{background:#eaf2e8;color:var(--accent2);}
+.pd-badge.sale{background:#fdf0f0;color:var(--accent);}
+.pd-badge.preorder{background:#fff8e0;color:#b8860b;}
+.pd-divider{height:1px;background:var(--border);margin:16px 0;}
+.pd-size-label{font-size:0.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;justify-content:space-between;}
+.pd-size-label a{color:var(--accent);cursor:pointer;text-decoration:none;}
+.pd-size-label a:hover{text-decoration:underline;}
+.pd-sizes{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.pd-size-btn{border:1.5px solid var(--border);background:#fff;padding:8px 14px;font-size:0.85rem;cursor:pointer;border-radius:4px;transition:all 0.15s;min-width:44px;text-align:center;}
+.pd-size-btn:hover{border-color:var(--ink);}
+.pd-size-btn.selected{background:var(--ink);color:#fff;border-color:var(--ink);}
+.pd-add-btn{width:100%;background:var(--accent);color:#fff;border:none;padding:15px;font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:2px;cursor:pointer;border-radius:6px;transition:background 0.2s;margin-bottom:12px;}
+.pd-add-btn:hover{background:#c42d22;}
+.pd-signals{display:flex;flex-direction:column;gap:6px;margin-bottom:20px;}
+.pd-signal{font-size:0.8rem;color:var(--muted);display:flex;align-items:center;gap:8px;}
+.pd-accordion{border-top:1px solid var(--border);}
+.pd-acc-item{border-bottom:1px solid var(--border);}
+.pd-acc-trigger{width:100%;background:none;border:none;padding:14px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;font-size:0.85rem;font-weight:500;font-family:'DM Sans',sans-serif;}
+.pd-acc-trigger::after{content:'+';font-size:1.1rem;color:var(--muted);}
+.pd-acc-trigger.open::after{content:'−';}
+.pd-acc-body{display:none;padding:0 0 14px;font-size:0.82rem;color:var(--muted);line-height:1.7;}
+.pd-acc-body.open{display:block;}
+.pd-acc-body ul{padding-left:16px;}
+.pd-acc-body li{margin-bottom:4px;}
+@media(max-width:680px){
+  .pd-body{grid-template-columns:1fr;overflow-y:auto;}
+  .pd-gallery{padding:16px;}
+  .pd-details{padding:20px 16px;}
+  .pd-name{font-size:1.6rem;}
+}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:300;align-items:center;justify-content:center;padding:20px;}
 .modal-overlay.open{display:flex;}
 .modal-box{background:#fff;border-radius:12px;width:100%;max-width:620px;max-height:85vh;display:flex;flex-direction:column;overflow:hidden;}
@@ -586,6 +638,19 @@ footer{background:var(--ink);color:#fff;padding:48px 32px 24px;}
   </div>
 </div>
 
+<!-- PRODUCT DETAIL MODAL -->
+<div class="pd-overlay" id="pd-overlay" onclick="closePDOutside(event)">
+  <div class="pd-box" id="pd-box">
+    <button class="pd-close" onclick="closePD()">✕</button>
+    <div class="pd-body">
+      <!-- LEFT: GALLERY -->
+      <div class="pd-gallery" id="pd-gallery"></div>
+      <!-- RIGHT: DETAILS -->
+      <div class="pd-details" id="pd-details"></div>
+    </div>
+  </div>
+</div>
+
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox" onclick="closeLightboxOutside(event)">
   <div class="lightbox-inner">
@@ -714,18 +779,14 @@ function renderProducts(filter='all') {
     const hasImages = p.images && p.images.length > 0;
     const firstImg = hasImages ? p.images[0] : null;
     return `
-    <div class="product-card" data-id="${p.id}">
-      <div class="product-img" style="background:${p.bg};" onclick="${hasImages ? `openLightbox(${p.id},0)` : ''}">
+    <div class="product-card" data-id="${p.id}" onclick="openPD(${p.id})" style="cursor:pointer;">
+      <div class="product-img" style="background:${p.bg};">
         ${p.badge ? `<span class="badge ${p.badge}">${p.badge.toUpperCase()}</span>` : ''}
         ${firstImg
           ? `<img src="${firstImg}" alt="${p.name}" id="card-img-${p.id}"/>`
           : `<span style="font-size:4.5rem;">👕</span>`
         }
-        ${hasImages && p.images.length > 1 ? `
-          <div class="thumb-dots">
-            ${p.images.map((_,i) => `<span class="thumb-dot${i===0?' active':''}" onclick="event.stopPropagation();switchCardImg(${p.id},${i},this)"></span>`).join('')}
-          </div>` : ''}
-        ${hasImages ? `<span class="zoom-hint">CLICK TO ZOOM</span>` : ''}
+        ${hasImages ? `<span class="zoom-hint">VIEW DETAILS</span>` : ''}
       </div>
       <div class="product-info">
         <div class="product-name">${p.name}</div>
@@ -733,10 +794,10 @@ function renderProducts(filter='all') {
         <div class="product-price">
           ${p.oldPrice ? `<span class="old">RM ${p.oldPrice.toFixed(2)}</span><span class="new-price">RM ${p.price.toFixed(2)}</span>` : `RM ${p.price.toFixed(2)}`}
         </div>
-        <div class="size-row" id="sizes-${p.id}">
+        <div class="size-row" id="sizes-${p.id}" onclick="event.stopPropagation()">
           ${p.sizes.map(s => `<button class="size-btn" onclick="selectSize(${p.id},'${s}',this)">${s}</button>`).join('')}
         </div>
-        <button class="add-btn" onclick="addToCart(${p.id})">ADD TO CART</button>
+        <button class="add-btn" onclick="event.stopPropagation();addToCart(${p.id})">ADD TO CART</button>
       </div>
     </div>`;
   }).join('');
@@ -984,7 +1045,146 @@ function resetSlideTimer() {
   startSlideTimer();
 }
 
-// ─── MODALS ────────────────────────────────────────────
+// ─── PRODUCT DETAIL MODAL ─────────────────────────────
+let pdSelectedSize = null;
+
+function openPD(pid) {
+  const p = PRODUCTS.find(x => x.id === pid);
+  if (!p) return;
+  pdSelectedSize = selectedSizes[pid] || null;
+  document.getElementById('pd-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderPDGallery(p);
+  renderPDDetails(p);
+}
+
+function closePD() {
+  document.getElementById('pd-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closePDOutside(e) {
+  if (e.target === document.getElementById('pd-overlay')) closePD();
+}
+
+function renderPDGallery(p) {
+  const hasImages = p.images && p.images.length > 0;
+  document.getElementById('pd-gallery').innerHTML = `
+    <div class="pd-main-img-wrap">
+      ${hasImages
+        ? `<img class="pd-main-img" id="pd-main-img" src="${p.images[0]}" alt="${p.name}"/>`
+        : `<div class="pd-main-placeholder">👕</div>`}
+    </div>
+    ${hasImages && p.images.length > 1 ? `
+    <div class="pd-thumbs">
+      ${p.images.map((img,i) => `<img class="pd-thumb${i===0?' active':''}" src="${img}" onclick="pdSwitchImg('${img}',this)"/>`).join('')}
+    </div>` : ''}
+  `;
+}
+
+function pdSwitchImg(src, thumb) {
+  const main = document.getElementById('pd-main-img');
+  if (main) { main.style.opacity='0'; setTimeout(()=>{main.src=src;main.style.opacity='1';},150); }
+  document.querySelectorAll('.pd-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+
+function renderPDDetails(p) {
+  const badgeHtml = p.badge ? `<span class="pd-badge ${p.badge}">${p.badge === 'preorder' ? 'PRE-ORDER' : p.badge.toUpperCase()}</span>` : '';
+  const priceHtml = p.oldPrice
+    ? `<span class="pd-old-price">RM ${p.oldPrice.toFixed(2)}</span><span class="pd-price" style="color:var(--accent)">RM ${p.price.toFixed(2)}</span>`
+    : `<span class="pd-price">RM ${p.price.toFixed(2)}</span>`;
+
+  document.getElementById('pd-details').innerHTML = `
+    <div class="pd-brand">SEMBOYAN STREETWEAR</div>
+    <div class="pd-name">${p.name}</div>
+    <div class="pd-sub">${p.sub}</div>
+    <div class="pd-price-wrap">${priceHtml}</div>
+    ${badgeHtml}
+    <div class="pd-divider"></div>
+    <div class="pd-size-label">
+      <span>SELECT SIZE</span>
+      <a onclick="closePD();openModal('size-guide')">Size Guide →</a>
+    </div>
+    <div class="pd-sizes">
+      ${p.sizes.map(s => `<button class="pd-size-btn${pdSelectedSize===s?' selected':''}" onclick="pdSelectSize('${s}',this,${p.id})">${s}</button>`).join('')}
+    </div>
+    <button class="pd-add-btn" onclick="pdAddToCart(${p.id})">
+      ${p.badge==='preorder' ? 'PRE-ORDER NOW →' : 'ADD TO CART →'}
+    </button>
+    <div class="pd-signals">
+      <div class="pd-signal">🚚 Free shipping on orders above RM150</div>
+      <div class="pd-signal">📦 Ships in 3–5 business days</div>
+      ${p.badge==='preorder' ? '<div class="pd-signal">⏳ Pre-order ships in 2–3 weeks</div>' : ''}
+      <div class="pd-signal">↩️ 7-day returns on full-price items</div>
+    </div>
+    <div class="pd-accordion">
+      <div class="pd-acc-item">
+        <button class="pd-acc-trigger" onclick="pdToggleAcc(this)">Description</button>
+        <div class="pd-acc-body">
+          <ul>
+            <li>100% organic cotton, 180–200gsm</li>
+            <li>Unisex regular fit</li>
+            <li>Screen printed graphic</li>
+            <li>Ribbed crew neck</li>
+            <li>Designed & printed in Malaysia</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pd-acc-item">
+        <button class="pd-acc-trigger" onclick="pdToggleAcc(this)">Care Instructions</button>
+        <div class="pd-acc-body">
+          <ul>
+            <li>Machine wash cold (30°C max)</li>
+            <li>Turn inside out before washing</li>
+            <li>Do not tumble dry — air dry only</li>
+            <li>Do not iron directly on print</li>
+            <li>Do not bleach</li>
+          </ul>
+        </div>
+      </div>
+      <div class="pd-acc-item">
+        <button class="pd-acc-trigger" onclick="pdToggleAcc(this)">Shipping & Returns</button>
+        <div class="pd-acc-body">
+          <p>RM9 flat rate shipping · Free above RM150</p>
+          <p>7-day returns on unworn, full-price items.</p>
+          <p>Email hello@semboyanstreetwear.my with your order ID.</p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function pdSelectSize(size, btn, pid) {
+  pdSelectedSize = size;
+  selectedSizes[pid] = size;
+  document.querySelectorAll('.pd-size-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  // also sync card size buttons
+  const cardSizes = document.querySelectorAll(`#sizes-${pid} .size-btn`);
+  cardSizes.forEach(b => { b.classList.toggle('selected', b.textContent === size); });
+}
+
+function pdAddToCart(pid) {
+  if (!pdSelectedSize && !selectedSizes[pid]) {
+    showToast('Alamak! Choose a size dulu lah 🙏');
+    return;
+  }
+  addToCart(pid);
+  closePD();
+}
+
+function pdToggleAcc(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    closePD();
+    ['size-guide','shipping','faq','about'].forEach(id => closeModal(id));
+  }
+});
 function openModal(id) {
   document.getElementById(`modal-${id}`).classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1000,11 +1200,6 @@ function toggleFaq(el) {
   el.classList.toggle('open');
   el.nextElementSibling.classList.toggle('open');
 }
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    ['size-guide','shipping','faq','about'].forEach(id => closeModal(id));
-  }
-});
 
 // Init — load prices from Google Sheet
 loadProductsFromSheet();
